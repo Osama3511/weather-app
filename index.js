@@ -1,6 +1,6 @@
 const API = "KAFEUMVCB58NWZCSXK4NYTYTC"; // just a free api key from visual crossing no need to hide it
 
-const city = "mersin";
+const city = "london";
 
 function getCurrentDate() {
   const date = new Date();
