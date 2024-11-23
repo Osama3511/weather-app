@@ -1,7 +1,5 @@
 const API = "KAFEUMVCB58NWZCSXK4NYTYTC"; // just a free api key from visual crossing no need to hide it
 
-const city = "london";
-
 function getCurrentDate() {
   const date = new Date();
   const year = date.getFullYear();
@@ -11,7 +9,7 @@ function getCurrentDate() {
   return `${year}-${month}-${day}`;
 }
 
-async function getWeather() {
+async function getWeather(city) {
   const date = getCurrentDate();
   try {
     const response = await fetch(
@@ -21,18 +19,18 @@ async function getWeather() {
     );
 
     const json = await response.json();
+    console.log(json);
     return json;
   } catch (err) {
     console.log(err);
   }
 }
 
-async function Weather() {
-  const currentWeather = await getWeather();
+async function Weather(city) {
+  const currentWeather = await getWeather(city);
 
   const feelsLike = currentWeather.days[0].feelslike;
   const getFeelsLike = () => feelsLike;
-
 
   const temp = currentWeather.days[0].temp;
   const getTemp = () => temp;
@@ -40,17 +38,59 @@ async function Weather() {
   const description = currentWeather.days[0].description;
   const getDescription = () => description;
 
+  const location = currentWeather.resolvedAddress;
+  const getLocation = () => location;
+
   return {
+    getLocation,
     getFeelsLike,
     getTemp,
     getDescription,
   };
 }
 
+function screenController() {
+  async function updateScreen() {
+    const city = document.querySelector("#search").value;
+    const weather = await Weather(city);
+
+    const container = document.querySelector(".container");
+    container.textContent = "";
+
+    const card = document.createElement("div");
+    const location = document.createElement("p");
+    const feelsLike = document.createElement("p");
+    const temp = document.createElement("p");
+    const description = document.createElement("p");
+
+    location.textContent = weather.getLocation();
+    feelsLike.textContent = weather.getFeelsLike();
+    temp.textContent = weather.getTemp();
+    description.textContent = weather.getDescription();
+
+    card.classList.add("card");
+
+    card.appendChild(location);
+    card.appendChild(description);
+    card.appendChild(temp);
+    card.appendChild(feelsLike);
+
+    container.appendChild(card);
+  }
+
+  const searchBtn = document.querySelector(".search-btn");
+
+  searchBtn.addEventListener("click", updateScreen);
+}
+
+screenController();
+
 async function main() {
-  const weather = await Weather();
-  console.log(weather.getDescription());
+  const weather = await Weather("mersin");
+  console.log("description: " + weather.getDescription());
+  console.log("Temp: " + weather.getTemp());
+  console.log("feels like: " + weather.getFeelsLike());
+  console.log(weather.getLocation());
 }
 
 main();
-
