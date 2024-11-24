@@ -83,14 +83,4 @@ function screenController() {
   searchBtn.addEventListener("click", updateScreen);
 }
 
-screenController();
 
-async function main() {
-  const weather = await Weather("mersin");
-  console.log("description: " + weather.getDescription());
-  console.log("Temp: " + weather.getTemp());
-  console.log("feels like: " + weather.getFeelsLike());
-  console.log(weather.getLocation());
-}
-
-main();
