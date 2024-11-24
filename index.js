@@ -83,4 +83,5 @@ function screenController() {
   searchBtn.addEventListener("click", updateScreen);
 }
 
+screenController();
 
